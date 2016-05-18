@@ -30,22 +30,9 @@
   when: "{{ item['run_as_service'] | default(container_run_as_service) }}"
   with_items: "{{ docker_containers }}"
   notify: Reload systemd
-  register: create_service
-
-- name: Force the Reload systemd handler to run if the systemd service file changed
-  meta: flush_handlers
-  when: "{{ create_service.changed | default(false) }}"
-
-- name: Default the service_state to started
-  set_fact: service_state="started"
-
-# If the systemd service file changed, set the service state to restarted
-- name: Change the service_state to restarted
-  set_fact: service_state="restarted"
-  when: "{{ create_service.changed | default(false) }}"
 
 - name: Enable and start the Docker container services
-  service: name="{{ item['name'] }}" state="{{ service_state }}" enabled=yes
+  service: name="{{ item['name'] }}" state=started enabled=yes
   when: "{{ item['run_as_service'] | default(container_run_as_service) }}"
   with_items: "{{ docker_containers }}"
 
