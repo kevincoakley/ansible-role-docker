@@ -1,0 +1,16 @@
+[Unit]
+Description={{ item["name"] }}
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+KillMode=none
+EnvironmentFile=/etc/environment
+ExecStartPre=-/usr/bin/docker kill {{ item["name"] }}
+ExecStartPre=-/usr/bin/docker rm {{ item["name"] }}
+ExecStartPre=/usr/bin/docker pull {{ item["image"] }}
+ExecStart=/usr/bin/docker run  {% for port in item["ports"] %}--publish={{ port }} {% endfor %} {% for volume in item["volumes"] %}--publish={{ volume }} {% endfor %} --name {{ item["name"] }} {{ item["image"] }}
+ExecStop=/usr/bin/docker stop {{ item["name"] }}
+
+[Install]
+WantedBy=multi-user.target
