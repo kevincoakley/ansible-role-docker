@@ -3,13 +3,18 @@
 - set_fact:
     ansible_python_interpreter: "/usr/bin/env python"
 
+- name: Run for docker-machine
+  set_fact:
+    docker_use_tls: encrypt
+  when: ansible_env.DOCKER_MACHINE_NAME is defined
+
 - name: Start the Docker containers
   docker:
     name: "{{ item['name'] }}"
     image: "{{ item['image'] }}"
     privileged: "{{ item['privileged'] | default(container_privileged) }}"
     state: "{{ item['state'] | default(container_state) }}"
-    use_tls: encrypt
+    use_tls: "{{ docker_use_tls | default(omit) }}"
     ports: "{{ item['ports'] | default(omit) }}"
     volumes: "{{ item['volumes'] | default(omit) }}"
   with_items: "{{ docker_containers }}"
