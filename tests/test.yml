@@ -1,6 +1,6 @@
 ---
 - name: Create two docker containers
-  hosts: docker
+  hosts: docker-native
 
   vars:
     - container_state: reloaded
@@ -25,8 +25,37 @@
   tags:
     - docker-start
 
+
+- name: Create two docker containers
+  hosts: docker-systemd
+
+  vars:
+    - docker_mocker: true
+    - container_run_as_service: true
+    - container_privileged: true
+    - docker_containers:
+        - name: ubuntu-container
+          image: kevincoakley/ubuntu16.04-systemd
+          ports:
+            - "2200:22"
+          volumes:
+            - "/sys/fs/cgroup:/sys/fs/cgroup"
+        - name: centos-container
+          image: kevincoakley/centos7-systemd
+          ports:
+            - "2222:22"
+          volumes:
+            - "/sys/fs/cgroup:/sys/fs/cgroup"
+
+  roles:
+    - ansible-role-docker
+
+  tags:
+    - docker-systemd
+
+
 - name: Remove the two docker containers
-  hosts: docker
+  hosts: docker-native
 
   vars:
     - container_state: absent
