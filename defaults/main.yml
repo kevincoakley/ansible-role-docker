@@ -1,2 +1,3 @@
 ---
-# defaults file for ansible-role-docker
+container_state: started
+container_privileged: false
