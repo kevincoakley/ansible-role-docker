@@ -1,2 +1,18 @@
 ---
-# tasks file for ansible-role-docker
+# Work around "docker-py is needed for this module" error with docker-machine
+- set_fact:
+    ansible_python_interpreter: "/usr/bin/env python"
+
+- name: Start the Docker containers
+  docker:
+    name: "{{ item['name'] }}"
+    image: "{{ item['image'] }}"
+    privileged: "{{ item['privileged'] | default(container_privileged) }}"
+    state: "{{ item['state'] | default(container_state) }}"
+    use_tls: encrypt
+    ports: "{{ item['ports'] | default(omit) }}"
+    volumes: "{{ item['volumes'] | default(omit) }}"
+  with_items: "{{ docker_containers }}"
+
+- name: Give the containers time to start/exit
+  pause: seconds=5
