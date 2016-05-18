@@ -1,6 +1,8 @@
 Role Name
 =========
 
+[![Build Status](https://travis-ci.org/kevincoakley/ansible-role-docker.svg?branch=master)](https://travis-ci.org/kevincoakley/ansible-role-docker)
+
 A brief description of the role goes here.
 
 Requirements
