@@ -8,7 +8,7 @@
     docker_use_tls: encrypt
   when: ansible_env.DOCKER_MACHINE_NAME is defined
 
-- name: Start the Docker containers
+- name: Manage the Docker containers
   docker:
     name: "{{ item['name'] }}"
     image: "{{ item['image'] }}"
