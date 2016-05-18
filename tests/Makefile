@@ -1,4 +1,4 @@
-.PHONY: docker-start docker-stop all
+.PHONY: docker-start docker-systemd docker-stop all
 
 DEBUG =
 TAGS = all
@@ -16,6 +16,9 @@ all: executable
 
 docker-start: TAGS = docker-start
 docker-start: executable
+
+docker-systemd: TAGS = docker-systemd
+docker-systemd: executable
 
 docker-stop: TAGS = docker-stop
 docker-stop: executable
