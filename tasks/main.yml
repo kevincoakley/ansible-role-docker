@@ -20,4 +20,4 @@
   with_items: "{{ docker_containers }}"
 
 - name: Give the containers time to start/exit
-  pause: seconds=5
+  pause: seconds="{{ container_pause_seconds }}"
