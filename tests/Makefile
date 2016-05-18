@@ -3,6 +3,15 @@
 DEBUG =
 TAGS = all
 
+INVENTORY 				:=
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+    INVENTORY += inventory-docker
+endif
+ifeq ($(UNAME_S),Darwin)
+    INVENTORY += inventory-docker-machine
+endif
+
 all: executable
 
 docker-start: TAGS = docker-start
@@ -15,4 +24,4 @@ debug: DEBUG = -vvvv
 debug: executable
 
 executable:
-	ansible-playbook -i inventory -t $(TAGS) test.yml $(DEBUG)
+	ansible-playbook -i $(INVENTORY) -t $(TAGS) test.yml $(DEBUG)
