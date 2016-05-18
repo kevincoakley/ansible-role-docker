@@ -29,6 +29,7 @@
   template: src=container.service.j2 dest=//etc/systemd/system/{{ item['name'] }}.service owner=root group=root mode=0644
   when: "{{ item['run_as_service'] | default(container_run_as_service) }}"
   with_items: "{{ docker_containers }}"
+  notify: Reload systemd
 
 - name: Enable and start the Docker container services
   service: name="{{ item['name'] }}" state=started enabled=yes
