@@ -1,5 +1,43 @@
 ---
-- hosts: localhost
-  remote_user: root
+- name: Create two docker containers
+  hosts: docker
+
+  vars:
+    - container_state: reloaded
+    - container_privileged: true
+    - docker_containers:
+        - name: ubuntu-container
+          image: kevincoakley/ubuntu16.04-systemd
+          ports:
+            - "2200:22"
+          volumes:
+            - "/sys/fs/cgroup:/sys/fs/cgroup"
+        - name: centos-container
+          image: kevincoakley/centos7-systemd
+          ports:
+            - "2222:22"
+          volumes:
+            - "/sys/fs/cgroup:/sys/fs/cgroup"
+
   roles:
     - ansible-role-docker
+
+  tags:
+    - docker-start
+
+- name: Remove the two docker containers
+  hosts: docker
+
+  vars:
+    - container_state: absent
+    - docker_containers:
+        - name: ubuntu-container
+          image: kevincoakley/ubuntu16.04-systemd
+        - name: centos-container
+          image: kevincoakley/centos7-systemd
+
+  roles:
+    - ansible-role-docker
+
+  tags:
+    - docker-stop
