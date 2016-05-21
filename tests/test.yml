@@ -40,6 +40,8 @@
             - "2200:22"
           volumes:
             - "/sys/fs/cgroup:/sys/fs/cgroup"
+          ulimits:
+            - "nofile=40000:40000"
         - name: centos-container
           image: kevincoakley/centos7-systemd
           ports:
