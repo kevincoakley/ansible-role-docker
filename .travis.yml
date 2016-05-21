@@ -28,8 +28,8 @@ install:
   - ansible --version
 
 script:
-  - ansible-playbook -i tests/inventory-docker tests/test.yml --syntax-check
-  - cd tests && make debug
+  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
+  - ansible-playbook -i tests/inventory tests/test.yml
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
