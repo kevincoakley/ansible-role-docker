@@ -1,34 +1,98 @@
-Role Name
-=========
+ansible-role-docker
+===================
 
 [![Build Status](https://travis-ci.org/kevincoakley/ansible-role-docker.svg?branch=master)](https://travis-ci.org/kevincoakley/ansible-role-docker)
 
-A brief description of the role goes here.
+Manage Docker conatiners natively or using systemd. 
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Tested with CentOS 7, Ubuntu 16.04 and Project Atomic. Docker needs to be installed.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+    container_state: started
+
+See Ansible Docker module documentation at [http://docs.ansible.com/ansible/docker_module.html](http://docs.ansible.com/ansible/docker_module.html).
+
+    container_privileged: false
+
+Run the container with privileged permissions.
+
+    container_run_as_service: false
+
+If false then the role will run the container natively using the docker command. If true then the role will create a unit file in /etc/systemd/system/ and run the service from systemd. 
+
+    container_pause_seconds: 1
+
+Time to pause after starting the container in case the container needs a few seconds to get up and running.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+    - name: Create two docker containers
+      hosts: docker-native
+    
+      vars:
+        - container_state: reloaded
+        - container_privileged: true
+        - docker_containers:
+            - name: ubuntu-container
+              image: kevincoakley/ubuntu16.04-systemd
+              ports:
+                - "2200:22"
+              volumes:
+                - "/sys/fs/cgroup:/sys/fs/cgroup"
+            - name: centos-container
+              image: kevincoakley/centos7-systemd
+              ports:
+                - "2222:22"
+              volumes:
+                - "/sys/fs/cgroup:/sys/fs/cgroup"
+    
       roles:
-         - { role: username.rolename, x: 42 }
-
+        - ansible-role-docker
+    
+      tags:
+        - docker-start
+    
+    
+    - name: Create two docker containers using systemd
+      hosts: docker-systemd
+    
+      vars:
+        - docker_mocker: true
+        - container_run_as_service: true
+        - container_privileged: true
+        - docker_containers:
+            - name: ubuntu-container
+              image: kevincoakley/ubuntu16.04-systemd
+              ports:
+                - "2200:22"
+              volumes:
+                - "/sys/fs/cgroup:/sys/fs/cgroup"
+              ulimits:
+                - "nofile=40000:40000"
+            - name: centos-container
+              image: kevincoakley/centos7-systemd
+              ports:
+                - "2222:22"
+              volumes:
+                - "/sys/fs/cgroup:/sys/fs/cgroup"
+    
+      roles:
+        - ansible-role-docker
+    
+      tags:
+        - docker-systemd
+        
 License
 -------
 
@@ -37,4 +101,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Kevin Coakley (https://github.com/kevincoakley)
