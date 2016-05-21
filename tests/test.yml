@@ -26,7 +26,7 @@
     - docker-start
 
 
-- name: Create two docker containers
+- name: Create two docker containers using systemd
   hosts: docker-systemd
 
   vars:
