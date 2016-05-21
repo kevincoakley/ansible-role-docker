@@ -9,7 +9,7 @@ EnvironmentFile=/etc/environment
 ExecStartPre=-/usr/bin/docker kill {{ item["name"] }}
 ExecStartPre=-/usr/bin/docker rm {{ item["name"] }}
 ExecStartPre=/usr/bin/docker pull {{ item["image"] }}
-ExecStart=/usr/bin/docker run {% if item["ports"] is defined %}{% for port in item["ports"] %}--publish={{ port }} {% endfor %}{% endif %} {% if item["volumes"] is defined %}{% for volume in item["volumes"] %}--volume={{ volume }} {% endfor %}{% endif %} {% if item['privileged'] | default(container_privileged) %}--privileged=true{% endif %} --name {{ item["name"] }} {{ item["image"] }}
+ExecStart=/usr/bin/docker run {% if item["ports"] is defined %}{% for port in item["ports"] %}--publish={{ port }} {% endfor %}{% endif %} {% if item["volumes"] is defined %}{% for volume in item["volumes"] %}--volume={{ volume }} {% endfor %}{% endif %} {% if item["ulimits"] is defined %}{% for ulimit in item["ulimits"] %}--ulimit={{ ulimit }} {% endfor %}{% endif %} {% if item['privileged'] | default(container_privileged) %}--privileged=true{% endif %} --name {{ item["name"] }} {{ item["image"] }}
 ExecStop=/usr/bin/docker stop {{ item["name"] }}
 
 [Install]

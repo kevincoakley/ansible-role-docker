@@ -17,6 +17,7 @@
     use_tls: "{{ docker_use_tls | default(omit) }}"
     ports: "{{ item['ports'] | default(omit) }}"
     volumes: "{{ item['volumes'] | default(omit) }}"
+    ulimits: "{{ item['ulimits'] | default(omit) }}"
   when: "{{ item['run_as_service'] | default(not container_run_as_service) }}"
   with_items: "{{ docker_containers }}"
 
