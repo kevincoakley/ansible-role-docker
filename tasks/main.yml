@@ -15,6 +15,7 @@
     privileged: "{{ item['privileged'] | default(container_privileged) }}"
     state: "{{ item['state'] | default(container_state) }}"
     use_tls: "{{ docker_use_tls | default(omit) }}"
+    expose: "{{ item['expose'] | default(omit) }}"
     ports: "{{ item['ports'] | default(omit) }}"
     volumes: "{{ item['volumes'] | default(omit) }}"
     ulimits: "{{ item['ulimits'] | default(omit) }}"

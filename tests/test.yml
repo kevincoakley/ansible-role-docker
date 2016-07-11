@@ -8,14 +8,20 @@
     - docker_containers:
         - name: ubuntu-container
           image: kevincoakley/ubuntu16.04-systemd
+          expose:
+            - "8080"
           ports:
             - "2200:22"
+            - "8081:8080"
           volumes:
             - "/sys/fs/cgroup:/sys/fs/cgroup"
         - name: centos-container
           image: kevincoakley/centos7-systemd
+          expose:
+            - "8080"
           ports:
             - "2222:22"
+            - "8082:8080"
           volumes:
             - "/sys/fs/cgroup:/sys/fs/cgroup"
 
@@ -36,16 +42,22 @@
     - docker_containers:
         - name: ubuntu-container
           image: kevincoakley/ubuntu16.04-systemd
+          expose:
+            - "8080"
           ports:
             - "2200:22"
+            - "8081:8080"
           volumes:
             - "/sys/fs/cgroup:/sys/fs/cgroup"
           ulimits:
             - "nofile=40000:40000"
         - name: centos-container
           image: kevincoakley/centos7-systemd
+          expose:
+            - "8080"
           ports:
             - "2222:22"
+            - "8082:8080"
           volumes:
             - "/sys/fs/cgroup:/sys/fs/cgroup"
 
