@@ -19,6 +19,7 @@
     ports: "{{ item['ports'] | default(omit) }}"
     volumes: "{{ item['volumes'] | default(omit) }}"
     ulimits: "{{ item['ulimits'] | default(omit) }}"
+    docker_api_version: auto
   when: "{{ item['run_as_service'] | default(not container_run_as_service) }}"
   with_items: "{{ docker_containers }}"
 
