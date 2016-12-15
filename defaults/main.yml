@@ -3,4 +3,5 @@ container_state: started
 container_privileged: false
 container_run_as_service: false
 container_pause_seconds: 1
+container_restart: false
 docker_mocker: false

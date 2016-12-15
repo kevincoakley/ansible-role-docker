@@ -3,7 +3,7 @@
   hosts: docker-native
 
   vars:
-    - container_state: reloaded
+    - container_restart: true
     - container_privileged: true
     - docker_containers:
         - name: ubuntu-container
