@@ -14,23 +14,23 @@
     volumes: "{{ item['volumes'] | default(omit) }}"
     ulimits: "{{ item['ulimits'] | default(omit) }}"
     restart: "{{ item['restart'] | default(container_restart) }}"
-  when: "{{ item['run_as_service'] | default(not container_run_as_service) }}"
+  when: item['run_as_service'] | default(not container_run_as_service)
   with_items: "{{ docker_containers }}"
 
 # Create a mock docker executable in order to test the role on a system that doesn't have docker installed
 - name: Copy the docker mock to /usr/bin/docker
   copy: src="{{ role_path }}/files/docker" dest=/usr/bin/docker owner=root group=root mode=0755
-  when: "{{ docker_mocker }}"
+  when: docker_mocker | bool
 
 - name: Create systemd service to manage the Docker containers
   template: src=container.service.j2 dest=//etc/systemd/system/{{ item['name'] }}.service owner=root group=root mode=0644
-  when: "{{ item['run_as_service'] | default(container_run_as_service) }}"
+  when: item['run_as_service'] | default(container_run_as_service)
   with_items: "{{ docker_containers }}"
   notify: Reload systemd
 
 - name: Enable and start the Docker container services
   service: name="{{ item['name'] }}" state=started enabled=yes
-  when: "{{ item['run_as_service'] | default(container_run_as_service) }}"
+  when: item['run_as_service'] | default(container_run_as_service)
   with_items: "{{ docker_containers }}"
 
 - name: Give the containers time to start/exit
