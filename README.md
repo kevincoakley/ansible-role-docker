@@ -8,7 +8,7 @@ Manage Docker containers natively or using systemd.
 Requirements
 ------------
 
-Tested with CentOS 7, Ubuntu 16.04 and Project Atomic. Docker needs to be installed.
+Tested with CentOS 7, Ubuntu 18.04 and Project Atomic. Docker needs to be installed.
 
 Role Variables
 --------------
