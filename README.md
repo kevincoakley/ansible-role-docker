@@ -3,7 +3,7 @@ ansible-role-docker
 
 [![Build Status](https://travis-ci.org/kevincoakley/ansible-role-docker.svg?branch=master)](https://travis-ci.org/kevincoakley/ansible-role-docker)
 
-Manage Docker conatiners natively or using systemd. 
+Manage Docker containers natively or using systemd. 
 
 Requirements
 ------------
