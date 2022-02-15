@@ -1,9 +1,4 @@
 ---
-# Work around "docker-py is needed for this module" error with docker
-- name: Set ansible_python_interpreter fact
-  set_fact:
-    ansible_python_interpreter: "/usr/bin/env python"
-
 - name: Manage the Docker containers natively with Docker
   docker_container:
     name: "{{ item['name'] }}"
